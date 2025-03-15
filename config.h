@@ -72,12 +72,13 @@ static const char mic[]         = "[ `amixer sget Capture | tail -n 1 | awk '{pr
 
 static const struct arg args[] = {
         /* function format          argument */
+	{ netip,		"ip %s | ",		"wlan0" },
 #ifdef HAS_BATTERY
-	{ battery_perc,		"battery %s%% ", "BAT0" },
-	{ battery_state,	"(%s) | ",	   "BAT0" },
+	{ battery_perc,		"battery %s%% ",	"BAT0" },
+	{ battery_state,	"(%s) | ",		"BAT0" },
 #endif
-        { cpu_perc,             "cpu %s%% | ",      NULL },
-        { ram_used,             "ram %s ",         NULL },
-        { ram_perc,             "(%s%%) | ",      NULL },
-        { datetime,             "%s",         "%a %F %T" }, /* Date time with this format: Day name YYYY-MM-DD 18:00:00 */
+        { cpu_perc,             "cpu %s%% | ",		NULL },
+        { ram_used,             "ram %s ",		NULL },
+        { ram_perc,             "(%s%%) | ",		NULL },
+        { datetime,             "%s",			"%a %F %T" }, /* Date time with this format: Day name YYYY-MM-DD 18:00:00 */
 };
