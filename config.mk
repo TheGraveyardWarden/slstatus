@@ -18,3 +18,8 @@ LDLIBS   = -lX11
 
 # compiler and linker
 CC = cc
+
+# battery
+ifeq ($(shell [ -d /sys/class/power_supply/BAT0 ] && echo yes),yes)
+	CFLAGS += -DHAS_BATTERY
+endif
