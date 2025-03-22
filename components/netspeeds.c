@@ -7,13 +7,19 @@
 #if defined(__linux__)
 	#include <stdint.h>
 
+	#define IF_MAX_BUFLEN 20
+
 	const char *
-	netspeed_rx(const char *interface)
+	netspeed_rx(void)
 	{
 		uintmax_t oldrxbytes;
 		static uintmax_t rxbytes;
 		extern const unsigned int interval;
 		char path[PATH_MAX];
+		char interface[IF_MAX_BUFLEN];
+
+		if (get_net_if(interface, IF_MAX_BUFLEN) < 0)
+			return NULL;
 
 		oldrxbytes = rxbytes;
 
@@ -34,12 +40,16 @@
 	}
 
 	const char *
-	netspeed_tx(const char *interface)
+	netspeed_tx(void)
 	{
 		uintmax_t oldtxbytes;
 		static uintmax_t txbytes;
 		extern const unsigned int interval;
 		char path[PATH_MAX];
+		char interface[IF_MAX_BUFLEN];
+
+		if (get_net_if(interface, IF_MAX_BUFLEN) < 0)
+			return NULL;
 
 		oldtxbytes = txbytes;
 

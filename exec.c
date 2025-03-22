@@ -75,8 +75,11 @@ struct exec_ret exec(const char *cmd, ...) {
 	return exec_ret;
 }
 
-int exec_ret_read_output(struct exec_ret *er, char *data, size_t size) {	
-	return read(er->outpipe, data, size);
+int exec_ret_read_output(struct exec_ret *er, char *data, size_t size) {
+	if (data == NULL)
+		return -1;
+
+	return read(er->outpipe, data, size);	
 }
 
 #ifdef EXEC_DEBUG
@@ -88,14 +91,14 @@ int main() {
 	char buffer[1024] = {0};
 
 
-	ret = exec("echo HAHAHAHA");
+	ret = exec("echo does it work correctly?");
 
 	if (ret.exit < 0) {
 		perror("exec()");
 		exit(1);
 	}
 
-	int nread = exec_ret_read_output(&ret, buffer, 3);
+	int nread = exec_ret_read_output(&ret, buffer, 4);
 	printf("nread: %d\n", nread);
 	if (nread < 0) {
 		perror("exec_ret_read_output()");

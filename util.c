@@ -5,8 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "util.h"
+#include "exec.h"
 
 char *argv0;
 
@@ -144,3 +146,43 @@ pscanf(const char *path, const char *fmt, ...)
 
 	return (n == EOF) ? -1 : n;
 }
+
+int exec_ret_output(char *data, size_t size, const char *fmt, ...) {
+	struct exec_ret ret;
+	char cmd[1024];
+	va_list ap;
+	size_t ret_size;
+	int err;
+
+	va_start(ap, fmt);
+	err = vsnprintf(cmd, 1024, fmt, ap);
+	va_end(ap);
+
+	if (err < 0)
+		return -1;
+
+	ret = exec(cmd);
+	if (ret.exit != 0 || (ret_size = exec_ret_read_output(&ret, data, size)) <= 0) {
+		goto ret_close_err;
+	}
+
+	exec_ret_close(&ret);
+	data[ret_size-1] = 0;
+
+	return 0;
+
+ret_close_err:
+	exec_ret_close(&ret);
+	return -1;
+}
+
+int get_net_if(char *net_if, size_t size) {
+	return exec_ret_output(net_if, size,
+			"ip route | grep default | awk '{for(i=1;i<NF;i++) if ($i == \"dev\") print($(i+1)) }'");
+}
+
+int get_ip(char *ip, size_t size) {
+	return exec_ret_output(ip, size,
+			"ip route | grep default | awk '{for(i=1;i<NF;i++) if ($i == \"src\") print($(i+1)) }'");
+}
+

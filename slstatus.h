@@ -41,8 +41,8 @@ const char *keymap(void);
 const char *load_avg(void);
 
 /* netspeeds */
-const char *netspeed_rx(const char *interface);
-const char *netspeed_tx(const char *interface);
+const char *netspeed_rx(void);
+const char *netspeed_tx(void);
 
 /* num_files */
 const char *num_files(const char *path);
@@ -82,3 +82,4 @@ const char *wifi_essid(const char *interface);
 
 /* netip */
 const char * netip(const char *interface);
+const char *net_info(void);

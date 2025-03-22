@@ -4,7 +4,7 @@
 
 include config.mk
 
-REQ = util
+REQ = util exec
 COM =\
 	components/battery\
 	components/cpu\
@@ -32,7 +32,7 @@ COM =\
 all: slstatus
 
 $(COM:=.o): config.mk $(REQ:=.h)
-slstatus.o: slstatus.c slstatus.h arg.h config.h config.mk $(REQ:=.h)
+slstatus.o: slstatus.c slstatus.h arg.h exec.h exec.c config.h config.mk $(REQ:=.h)
 
 .c.o:
 	$(CC) -o $@ -c $(CPPFLAGS) $(CFLAGS) $<
