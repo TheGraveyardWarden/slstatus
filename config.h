@@ -72,7 +72,8 @@ static const char mic[]         = "[ `amixer sget Capture | tail -n 1 | awk '{pr
 
 static const struct arg args[] = {
         /* function format          argument */
-	{net_info,				"%s - ",		NULL},
+	{ net_info,				"%s - ",		NULL },
+	{ wifi_essid,			"%s - ",		NULL },
 	{ netspeed_rx,		"down(%s) / ",		NULL},
 	{ netspeed_tx,		"up(%s) | ",		NULL},
 #ifdef HAS_BATTERY

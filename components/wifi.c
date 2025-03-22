@@ -68,11 +68,16 @@
 	}
 
 	const char *
-	wifi_essid(const char *interface)
+	wifi_essid(void)
 	{
 		static char id[IW_ESSID_MAX_SIZE+1];
 		int sockfd;
 		struct iwreq wreq;
+		char interface[20];
+
+		if (get_net_if(interface, 20) < 0) {
+			return NULL;
+		}
 
 		memset(&wreq, 0, sizeof(struct iwreq));
 		wreq.u.essid.length = IW_ESSID_MAX_SIZE+1;
