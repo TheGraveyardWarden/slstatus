@@ -177,12 +177,20 @@ ret_close_err:
 }
 
 int get_net_if(char *net_if, size_t size) {
-	return exec_ret_output(net_if, size,
-			"ip route | grep default | awk '{for(i=1;i<NF;i++) if ($i == \"dev\") print($(i+1)) }'");
+	if (exec_ret_output(net_if, size, "ip route | grep default | awk '{for(i=1;i<NF;i++) if ($i == \"dev\") print($(i+1)) }'") < 0)
+    return -1;
+  char *idx = strchr(net_if, '\n');
+  if (idx != NULL)
+    *idx = '\0';
+  return 0;
 }
 
 int get_ip(char *ip, size_t size) {
-	return exec_ret_output(ip, size,
-			"ip route | grep default | awk '{for(i=1;i<NF;i++) if ($i == \"src\") print($(i+1)) }'");
+	if (exec_ret_output(ip, size, "ip route | grep default | awk '{for(i=1;i<NF;i++) if ($i == \"src\") print($(i+1)) }'") < 0)
+    return -1;
+  char *idx = strchr(ip, '\n');
+  if (idx != NULL)
+    *idx = '\0';
+  return 0;
 }
 

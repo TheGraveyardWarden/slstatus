@@ -92,9 +92,10 @@
 		}
 		wreq.u.essid.pointer = id;
 		if (ioctl(sockfd,SIOCGIWESSID, &wreq) < 0) {
-			warn("ioctl 'SIOCGIWESSID':");
+			warn("ioctl 'SIOCGIWESSID'. maybe connected via LAN:");
 			close(sockfd);
-			return NULL;
+      strncpy(id, "<LAN>", 5);
+			return id;
 		}
 
 		close(sockfd);
